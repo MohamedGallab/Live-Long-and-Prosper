@@ -10,7 +10,7 @@ public class LLAPSearch {
     // priceBUILD2, foodUseBUILD2,
     // materialsUseBUILD2, energyUseBUILD2, prosperityBUILD1;
     void solve(String intialState, String strategy, boolean visualize) {
-
+        
     }
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
