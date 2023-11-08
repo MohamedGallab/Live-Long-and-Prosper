@@ -42,6 +42,7 @@ abstract class GenericSearch {
             for (Node child : children) {
                 if (child != null) {
                     nodes.offer(child);
+                    System.out.println(child.state);
                 }
             }
         }
