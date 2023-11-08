@@ -21,4 +21,15 @@ public class State {
         this.orderedResources = orderedResources;
         this.daysTillDelivery = daysTillDelivery;
     }
+    
+    public String toString() {
+        return "Prosperity: " + prosperity +
+               ", Food: " + food +
+               ", Materials: " + materials +
+               ", Energy: " + energy +
+               ", Money Spent: " + moneySpent +
+               ", Has Requested: " + hasRequested +
+               ", Ordered Resources: " + orderedResources +
+               ", Days Till Delivery: " + daysTillDelivery;
+    }
 }

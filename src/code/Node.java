@@ -20,8 +20,7 @@ public class Node {
                 node.state.moneySpent, node.state.hasRequested, node.state.orderedResources,
                 node.state.daysTillDelivery);
         this.depth = node.depth;
-        this.operator = node.operator;
-        this.parent = node.parent;
+        this.parent = node;
     }
 
     Node(State state, Node parent, LLAPSearch.Operator operator, int depth) {

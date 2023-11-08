@@ -23,18 +23,23 @@ public class LLAPSearch extends GenericSearch {
         LLAPSearch agent = new LLAPSearch(initialState);
         Node goalNode = agent.GeneralSearch(strategy);
 
-        return agent.buildAnswer(goalNode);
+        return agent.buildAnswer(goalNode, visualize);
     }
 
-    String buildAnswer(Node node) {
-        String answer = "";
+    String buildAnswer(Node node, boolean visualize) {
+        if (node == null) {
+            return "NOSOLUTION";
+        }
+
+        String answer = ";" + node.state.moneySpent + ";" + expandedNodes;
 
         while (node.parent != null) {
             answer = node.operator + ", " + answer;
             node = node.parent;
+            if (visualize) {
+                System.out.println(node);
+            }
         }
-
-        answer += ";" + node.state.moneySpent + ";";
 
         return answer;
     }
@@ -99,6 +104,7 @@ public class LLAPSearch extends GenericSearch {
 
         child.state.hasRequested = true;
         child.state.daysTillDelivery = delayRequestFood;
+        child.state.orderedResources = Resource.Food;
         child.operator = Operator.RequestFood;
         child.depth++;
         child.state.food--;
@@ -121,7 +127,8 @@ public class LLAPSearch extends GenericSearch {
 
         child.state.hasRequested = true;
         child.state.daysTillDelivery = delayRequestMaterials;
-        child.operator = Operator.RequestFood;
+        child.operator = Operator.RequestMaterials;
+        child.state.orderedResources = Resource.Materials;
         child.depth++;
         child.state.food--;
         child.state.materials--;
@@ -142,12 +149,14 @@ public class LLAPSearch extends GenericSearch {
 
         child.state.hasRequested = true;
         child.state.daysTillDelivery = delayRequestEnergy;
-        child.operator = Operator.RequestFood;
+        child.operator = Operator.RequestEnergy;
+        child.state.orderedResources = Resource.Energy;
         child.depth++;
         child.state.food--;
         child.state.materials--;
         child.state.energy--;
         child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
+        
         if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
                 || child.state.moneySpent > 100000)
             return null;
@@ -155,6 +164,8 @@ public class LLAPSearch extends GenericSearch {
     }
 
     void checkDeliveryArrived(Node child) {
+        if (child.state.orderedResources == null)
+            return;
         if (child.state.daysTillDelivery == 0) {
             switch (child.state.orderedResources) {
                 case Resource.Food:
@@ -178,7 +189,7 @@ public class LLAPSearch extends GenericSearch {
         Node child = new Node(root);
         // checkDeliveryArrived(child);
 
-        child.operator = Operator.RequestFood;
+        child.operator = Operator.Wait;
         child.depth++;
         child.state.daysTillDelivery--;
         child.state.food--;
@@ -194,8 +205,9 @@ public class LLAPSearch extends GenericSearch {
     Node build1(Node root) {
         Node child = new Node(root);
 
-        child.state.daysTillDelivery--;
         child.depth++;
+        child.operator = Operator.Build1;
+        child.state.daysTillDelivery--;
         checkDeliveryArrived(child);
         child.state.food -= foodUseBUILD1;
         child.state.materials -= materialsUseBUILD1;
@@ -214,6 +226,7 @@ public class LLAPSearch extends GenericSearch {
         Node child = new Node(root);
 
         child.state.daysTillDelivery--;
+        child.operator = Operator.Build2;
         child.depth++;
         checkDeliveryArrived(child);
         child.state.food -= foodUseBUILD2;
