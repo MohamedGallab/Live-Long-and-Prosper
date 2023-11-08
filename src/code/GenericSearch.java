@@ -4,14 +4,27 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 abstract class GenericSearch {
-    abstract Node init(String initialState);
+    enum Operator {
+    }
+
+    GenericSearch(String initialState) {
+        this.initialState = init(initialState);
+    }
+
+    State initialState;
+
+    abstract State init(String initialState);
 
     abstract PriorityQueue<Node> createQueue(String strategy);
 
     abstract List<Node> expand(Node root);
 
-    String GeneralSearch(String initialState, String strategy) {
-        Node root = init(initialState);
+    abstract boolean isGoal(Node node);
+
+    abstract int costFunction(Node node);
+
+    Node GeneralSearch(String strategy) {
+        Node root = new Node(initialState, null, null, 0);
 
         var nodes = createQueue(strategy);
 
@@ -20,8 +33,8 @@ abstract class GenericSearch {
         while (!nodes.isEmpty()) {
             Node node = nodes.poll();
 
-            if (node.prosperity == 100) {
-                return "success";
+            if (isGoal(node)) {
+                return node;
             }
 
             List<Node> children = expand(node);
@@ -32,6 +45,6 @@ abstract class GenericSearch {
                 }
             }
         }
-        return "failure";
+        return null;
     }
 }

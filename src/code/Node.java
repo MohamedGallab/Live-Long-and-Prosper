@@ -1,29 +1,33 @@
 package code;
 
 public class Node {
-    int prosperity;
-    int food;
-    int materials;
-    int energy;
-    int moneySpent;
+    State state;
     Node parent;
-    Operator operator;
-    Boolean hasRequested = false;
-    int daysTillDelivery;
-    Resource orderedResources;
+    LLAPSearch.Operator operator;
     int depth;
 
-    Node(int prosperity, int food, int materials, int energy, Node parent, Operator operator, int depth,
-            Resource orderedResources, int moneySpent, int daysTillDelivery) {
-        this.orderedResources = orderedResources;
-        this.prosperity = prosperity;
-        this.food = food;
-        this.materials = materials;
-        this.energy = energy;
+    Node(int prosperity, int food, int materials, int energy, Node parent, LLAPSearch.Operator operator, int depth,
+            Resource orderedResources, int moneySpent, int daysTillDelivery, boolean hasRequested) {
+        this.state = new State(prosperity, food, materials, energy, moneySpent, hasRequested, orderedResources,
+                daysTillDelivery);
         this.depth = depth;
         this.operator = operator;
         this.parent = parent;
-        this.moneySpent = moneySpent;
-        this.daysTillDelivery = daysTillDelivery;
+    }
+
+    Node(Node node) {
+        this.state = new State(node.state.prosperity, node.state.food, node.state.materials, node.state.energy,
+                node.state.moneySpent, node.state.hasRequested, node.state.orderedResources,
+                node.state.daysTillDelivery);
+        this.depth = node.depth;
+        this.operator = node.operator;
+        this.parent = node.parent;
+    }
+
+    Node(State state, Node parent, LLAPSearch.Operator operator, int depth) {
+        this.state = state;
+        this.depth = depth;
+        this.operator = operator;
+        this.parent = parent;
     }
 }

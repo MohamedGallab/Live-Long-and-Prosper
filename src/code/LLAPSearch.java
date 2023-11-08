@@ -9,11 +9,34 @@ public class LLAPSearch extends GenericSearch {
     int amountRequestEnergy, delayRequestEnergy;
     int priceBUILD1, foodUseBUILD1, materialsUseBUILD1, energyUseBUILD1, prosperityBUILD1;
     int priceBUILD2, foodUseBUILD2, materialsUseBUILD2, energyUseBUILD2, prosperityBUILD2;
+    int expandedNodes = 0;
 
-    public String solve(String intialState, String strategy, boolean visualize) {
-        GeneralSearch(intialState, strategy);
+    public enum Operator {
+        RequestFood, RequestMaterials, RequestEnergy, Build1, Build2, Wait;
+    }
 
-        return "";
+    LLAPSearch(String initialState) {
+        super(initialState);
+    }
+
+    public static String solve(String initialState, String strategy, boolean visualize) {
+        LLAPSearch agent = new LLAPSearch(initialState);
+        Node goalNode = agent.GeneralSearch(strategy);
+
+        return agent.buildAnswer(goalNode);
+    }
+
+    String buildAnswer(Node node) {
+        String answer = "";
+
+        while (node.parent != null) {
+            answer = node.operator + ", " + answer;
+            node = node.parent;
+        }
+
+        answer += ";" + node.state.moneySpent + ";";
+
+        return answer;
     }
 
     PriorityQueue<Node> createQueue(String strategy) {
@@ -27,15 +50,15 @@ public class LLAPSearch extends GenericSearch {
                     case "ID":
                         return n2.depth - n1.depth;
                     case "UC":
-                        return n1.moneySpent - n2.moneySpent;
+                        return costFunction(n1) - costFunction(n2);
                     case "GR":
-                        return n2.prosperity - n1.prosperity;
+                        return greedyHeuristic(n1) - greedyHeuristic(n2);
                     case "GR2":
-                        return n1.moneySpent - n2.moneySpent;
+                        return greedyHeuristic2(n1) - greedyHeuristic2(n2);
                     case "AR":
-                        return 0;
+                        return arHeuristic(n1) - arHeuristic(n2);
                     case "AR2":
-                        return 0;
+                        return arHeuristic2(n1) - arHeuristic2(n2);
                     default:
                         return 0;
                 }
@@ -43,6 +66,14 @@ public class LLAPSearch extends GenericSearch {
         });
 
         return pq;
+    }
+
+    boolean isGoal(code.Node node) {
+        return node.state.prosperity == 100;
+    }
+
+    int costFunction(Node node) {
+        return node.state.moneySpent;
     }
 
     List<Node> expand(Node root) {
@@ -55,120 +86,149 @@ public class LLAPSearch extends GenericSearch {
         children.add(build2(root));
         children.add(wait(root));
 
+        expandedNodes++;
+
         return children;
     }
 
     Node requestFood(Node root) {
-        if (root.daysTillDelivery > 0)
+        if (root.state.daysTillDelivery > 0)
             return null;
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.RequestFood,
-                root.depth + 1, Resource.Food, root.moneySpent, root.daysTillDelivery);
-        child.hasRequested = true;
-        child.daysTillDelivery = delayRequestFood;
-        child.food--;
-        child.materials--;
-        child.energy--;
-        child.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+
+        Node child = new Node(root);
+
+        child.state.hasRequested = true;
+        child.state.daysTillDelivery = delayRequestFood;
+        child.operator = Operator.RequestFood;
+        child.depth++;
+        child.state.food--;
+        child.state.materials--;
+        child.state.energy--;
+
+        child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
+
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
     Node requestMaterials(Node root) {
-        if (root.daysTillDelivery > 0)
+        if (root.state.daysTillDelivery > 0)
             return null;
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.RequestMaterials,
-                root.depth + 1, Resource.Materials, root.moneySpent, root.daysTillDelivery);
-        child.hasRequested = true;
-        child.daysTillDelivery = delayRequestMaterials;
-        child.food--;
-        child.materials--;
-        child.energy--;
-        child.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+
+        Node child = new Node(root);
+
+        child.state.hasRequested = true;
+        child.state.daysTillDelivery = delayRequestMaterials;
+        child.operator = Operator.RequestFood;
+        child.depth++;
+        child.state.food--;
+        child.state.materials--;
+        child.state.energy--;
+        child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
+
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
     Node requestEnergy(Node root) {
-        if (root.daysTillDelivery > 0)
+        if (root.state.daysTillDelivery > 0)
             return null;
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.RequestEnergy,
-                root.depth + 1, Resource.Energy, root.moneySpent, root.daysTillDelivery);
-        child.hasRequested = true;
-        child.daysTillDelivery = delayRequestEnergy;
-        child.food--;
-        child.materials--;
-        child.energy--;
-        child.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+
+        Node child = new Node(root);
+
+        child.state.hasRequested = true;
+        child.state.daysTillDelivery = delayRequestEnergy;
+        child.operator = Operator.RequestFood;
+        child.depth++;
+        child.state.food--;
+        child.state.materials--;
+        child.state.energy--;
+        child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
     void checkDeliveryArrived(Node child) {
-        if (child.daysTillDelivery == 0) {
-            switch (child.orderedResources) {
+        if (child.state.daysTillDelivery == 0) {
+            switch (child.state.orderedResources) {
                 case Resource.Food:
-                    child.food += amountRequestFood;
+                    child.state.food += amountRequestFood;
                     break;
                 case Resource.Materials:
-                    child.materials += amountRequestMaterials;
+                    child.state.materials += amountRequestMaterials;
                     break;
                 case Resource.Energy:
-                    child.energy += amountRequestEnergy;
+                    child.state.energy += amountRequestEnergy;
                     break;
             }
         }
     }
 
     Node wait(Node root) {
-        if (root.daysTillDelivery <= 0) {
+        if (root.state.daysTillDelivery <= 0) {
             return null;
         }
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.Wait,
-                root.depth + 1, root.orderedResources, root.moneySpent, root.daysTillDelivery - 1);
+
+        Node child = new Node(root);
         // checkDeliveryArrived(child);
-        child.food--;
-        child.materials--;
-        child.energy--;
-        child.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+
+        child.operator = Operator.RequestFood;
+        child.depth++;
+        child.state.daysTillDelivery--;
+        child.state.food--;
+        child.state.materials--;
+        child.state.energy--;
+        child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
     Node build1(Node root) {
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.Build1,
-                root.depth + 1, root.orderedResources, root.moneySpent, root.daysTillDelivery - 1);
+        Node child = new Node(root);
+
+        child.state.daysTillDelivery--;
+        child.depth++;
         checkDeliveryArrived(child);
-        child.food -= foodUseBUILD1;
-        child.materials -= materialsUseBUILD1;
-        child.energy -= energyUseBUILD1;
-        child.prosperity += prosperityBUILD1;
-        child.moneySpent += (foodUseBUILD1 * unitPriceFood + materialsUseBUILD1 * unitPriceMaterials
+        child.state.food -= foodUseBUILD1;
+        child.state.materials -= materialsUseBUILD1;
+        child.state.energy -= energyUseBUILD1;
+        child.state.prosperity += prosperityBUILD1;
+        child.state.moneySpent += (foodUseBUILD1 * unitPriceFood + materialsUseBUILD1 * unitPriceMaterials
                 + energyUseBUILD1 * unitPriceEnergy + priceBUILD1);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
     Node build2(Node root) {
-        Node child = new Node(root.prosperity, root.food, root.materials, root.energy, root, Operator.Build2,
-                root.depth + 1, root.orderedResources, root.moneySpent, root.daysTillDelivery - 1);
+        Node child = new Node(root);
+
+        child.state.daysTillDelivery--;
+        child.depth++;
         checkDeliveryArrived(child);
-        child.food -= foodUseBUILD2;
-        child.materials -= materialsUseBUILD2;
-        child.energy -= energyUseBUILD2;
-        child.prosperity += prosperityBUILD2;
-        child.moneySpent += (foodUseBUILD2 * unitPriceFood + materialsUseBUILD2 * unitPriceMaterials
+        child.state.food -= foodUseBUILD2;
+        child.state.materials -= materialsUseBUILD2;
+        child.state.energy -= energyUseBUILD2;
+        child.state.prosperity += prosperityBUILD2;
+        child.state.moneySpent += (foodUseBUILD2 * unitPriceFood + materialsUseBUILD2 * unitPriceMaterials
                 + energyUseBUILD2 * unitPriceEnergy + priceBUILD2);
-        if (child.food < 0 || child.materials < 0 || child.energy < 0 || child.moneySpent > 100000)
+        if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
 
-    Node init(String initialState) {
+    State init(String initialState) {
         List<String> semicolonSplit = Arrays.asList(initialState.split(";"));
         List<List<Integer>> commaSplitList = new ArrayList<>();
 
@@ -184,7 +244,7 @@ public class LLAPSearch extends GenericSearch {
         }
 
         Node root = new Node(commaSplitList.get(0).get(0), commaSplitList.get(1).get(0), commaSplitList.get(1).get(1),
-                commaSplitList.get(1).get(2), null, null, 0, null, 0, -1);
+                commaSplitList.get(1).get(2), null, null, 0, null, 0, -1, false);
 
         unitPriceFood = commaSplitList.get(2).get(0);
         unitPriceMaterials = commaSplitList.get(2).get(1);
@@ -206,7 +266,59 @@ public class LLAPSearch extends GenericSearch {
         energyUseBUILD2 = commaSplitList.get(7).get(3);
         prosperityBUILD2 = commaSplitList.get(7).get(4);
 
-        return root;
+        return root.state;
+    }
+
+    int greedyHeuristic(Node node) {
+        return 100 - node.state.prosperity;
+    }
+
+    int greedyHeuristic2(Node node) {
+        int prosperityBuild = prosperityBUILD1 > prosperityBUILD2 ? prosperityBUILD1 : prosperityBUILD2;
+        int priceBuild = priceBUILD1 < priceBUILD2 ? priceBUILD1 : priceBUILD2;
+        int moneyToSpend = (100 - node.state.prosperity) / prosperityBuild * priceBuild;
+        return moneyToSpend;
+    }
+
+    int arHeuristic(Node node) {
+        int prosperityBuild = prosperityBUILD1 > prosperityBUILD2 ? prosperityBUILD1 : prosperityBUILD2;
+        int priceBuild = priceBUILD1 < priceBUILD2 ? priceBUILD1 : priceBUILD2;
+        int materialBuild = materialsUseBUILD1 < materialsUseBUILD2 ? materialsUseBUILD1 : materialsUseBUILD2;
+        int foodBuild = foodUseBUILD1 < foodUseBUILD2 ? foodUseBUILD1 : foodUseBUILD2;
+        int energyBuild = energyUseBUILD1 < energyUseBUILD2 ? energyUseBUILD1 : energyUseBUILD2;
+
+        int buildsRequired = (100 - node.state.prosperity) / prosperityBuild;
+        int foodCost = (buildsRequired * foodBuild - 50) * unitPriceFood;
+        int materialCost = (buildsRequired * materialBuild - 50) * unitPriceMaterials;
+        int energyCost = (buildsRequired * energyBuild - 50) * unitPriceEnergy;
+
+        int moneyToSpend = foodCost + materialCost + energyCost + buildsRequired * priceBuild;
+        return moneyToSpend;
+    }
+
+    int arHeuristic2(Node node) {
+        List<List<Integer>> pairs = new ArrayList<>();
+
+        for (int i = 0; i < 101; i++) {
+            for (int j = 0; j < 101; j++) {
+                if (i * prosperityBUILD1 + j * prosperityBUILD2 >= 100 - node.state.prosperity) {
+                    List<Integer> tmp = new ArrayList<>();
+                    tmp.add(i);
+                    tmp.add(j);
+                    pairs.add(tmp);
+                }
+            }
+        }
+
+        int minCost = Integer.MAX_VALUE;
+
+        for (List<Integer> pair : pairs) {
+            if (pair.get(0) * priceBUILD1 + pair.get(1) * priceBUILD2 < minCost) {
+                minCost = pair.get(0) * priceBUILD1 + pair.get(1) * priceBUILD2;
+            }
+        }
+
+        return minCost;
     }
 
     public static void main(String[] args) throws Exception {
@@ -216,6 +328,6 @@ public class LLAPSearch extends GenericSearch {
                 "30,2;19,1;15,1;" +
                 "300,5,7,3,20;" +
                 "500,8,6,3,40;";
-        new LLAPSearch().solve(init, "BF", true);
+        solve(init, "BF", true);
     }
 }
