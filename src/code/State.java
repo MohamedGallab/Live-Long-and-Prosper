@@ -20,6 +20,36 @@ public class State {
         this.daysTillDelivery = daysTillDelivery;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        State otherState = (State) obj;
+        return prosperity == otherState.prosperity &&
+                food == otherState.food &&
+                materials == otherState.materials &&
+                energy == otherState.energy &&
+                moneySpent == otherState.moneySpent &&
+                daysTillDelivery == otherState.daysTillDelivery &&
+                (orderedResources == null ? otherState.orderedResources == null
+                        : orderedResources.equals(otherState.orderedResources));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = prosperity;
+        result = 31 * result + food;
+        result = 31 * result + materials;
+        result = 31 * result + energy;
+        result = 31 * result + moneySpent;
+        result = 31 * result + (orderedResources == null ? 0 : orderedResources.hashCode());
+        result = 31 * result + daysTillDelivery;
+        return result;
+    }
+
     public String toString() {
         return "Prosperity: " + prosperity +
                 ", Food: " + food +

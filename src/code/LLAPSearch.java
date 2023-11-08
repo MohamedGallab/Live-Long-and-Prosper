@@ -1,7 +1,6 @@
 package code;
 
 import java.util.*;
-
 public class LLAPSearch extends GenericSearch {
     int unitPriceFood, unitPriceMaterials, unitPriceEnergy;
     int amountRequestFood, delayRequestFood;
@@ -61,9 +60,9 @@ public class LLAPSearch extends GenericSearch {
                     case "GR2":
                         return greedyHeuristic2(n1) - greedyHeuristic2(n2);
                     case "AR":
-                        return arHeuristic(n1) - arHeuristic(n2);
+                        return (costFunction(n1) + arHeuristic(n1)) - (costFunction(n2) + arHeuristic(n2));
                     case "AR2":
-                        return arHeuristic2(n1) - arHeuristic2(n2);
+                        return (costFunction(n1) + arHeuristic2(n1)) - (costFunction(n2) + arHeuristic2(n2));
                     default:
                         return 0;
                 }
@@ -153,7 +152,7 @@ public class LLAPSearch extends GenericSearch {
         child.state.materials--;
         child.state.energy--;
         child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
-        
+
         if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
                 || child.state.moneySpent > 100000)
             return null;
@@ -165,15 +164,15 @@ public class LLAPSearch extends GenericSearch {
             return;
         if (root.state.daysTillDelivery == 0) {
             switch (root.state.orderedResources) {
-                case Resource.Food:
+                case Food:
                     root.state.food += amountRequestFood;
                     root.state.food = root.state.food < 50 ? root.state.food : 50;
                     break;
-                case Resource.Materials:
+                case Materials:
                     root.state.materials += amountRequestMaterials;
                     root.state.materials = root.state.materials < 50 ? root.state.materials : 50;
                     break;
-                case Resource.Energy:
+                case Energy:
                     root.state.energy += amountRequestEnergy;
                     root.state.energy = root.state.energy < 50 ? root.state.energy : 50;
                     break;
@@ -182,12 +181,12 @@ public class LLAPSearch extends GenericSearch {
     }
 
     Node wait(Node root) {
-        if (root.state.daysTillDelivery < 0) {
+        Node child = new Node(root);
+
+        if (root.state.daysTillDelivery <= 0) {
             return null;
         }
-        
-        Node child = new Node(root);
-        
+
         child.operator = Operator.Wait;
         child.depth++;
         child.state.daysTillDelivery--;
@@ -199,14 +198,14 @@ public class LLAPSearch extends GenericSearch {
         child.state.moneySpent += (unitPriceFood + unitPriceMaterials + unitPriceEnergy);
 
         if (child.state.food < 0 || child.state.materials < 0 || child.state.energy < 0
-        || child.state.moneySpent > 100000)
+                || child.state.moneySpent > 100000)
             return null;
         return child;
     }
-    
+
     Node build1(Node root) {
         Node child = new Node(root);
-        
+
         child.depth++;
         child.operator = Operator.Build1;
         child.state.daysTillDelivery--;
@@ -336,13 +335,24 @@ public class LLAPSearch extends GenericSearch {
         return minCost;
     }
 
+    boolean isUnique(State state) {
+        return visited.add(state);
+    }
+
     public static void main(String[] args) throws Exception {
-        String init = "50;" +
-                "22,22,22;" +
-                "50,60,70;" +
-                "30,2;19,1;15,1;" +
-                "300,5,7,3,20;" +
-                "500,8,6,3,40;";
+        // String init = "50;" +
+        // "22,22,22;" +
+        // "50,60,70;" +
+        // "30,2;19,1;15,1;" +
+        // "300,5,7,3,20;" +
+        // "500,8,6,3,40;";
+        String init = "32;" +
+                "20,16,11;" +
+                "76,14,14;" +
+                "9,1;9,2;9,1;" +
+                "358,14,25,23,39;" +
+                "5024,20,17,17,38;";
+        System.out.println("hi");
         solve(init, "BF", true);
     }
 }

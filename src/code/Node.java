@@ -1,11 +1,15 @@
 package code;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
     State state;
     Node parent;
     LLAPSearch.Operator operator;
     int depth;
-
+    List<Node> children = new ArrayList<Node>();
+    
     Node(int prosperity, int food, int materials, int energy, Node parent, LLAPSearch.Operator operator, int depth,
             Resource orderedResources, int moneySpent, int daysTillDelivery) {
         this.state = new State(prosperity, food, materials, energy, moneySpent, orderedResources,
