@@ -20,12 +20,12 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static String solve(String initialState, String strategy, boolean visualize) {
-        LLAPSearch agent = new LLAPSearch(initialState);
+        LLAPSearch problem = new LLAPSearch(initialState);
 
         // Node goalNode = agent.GeneralSearch(strategy);
-        Node goalNode = Search.GeneralSearch(agent, strategy);
+        Node goalNode = Search.GeneralSearch(problem, strategy);
 
-        return agent.buildAnswer(goalNode, visualize);
+        return problem.buildAnswer(goalNode, visualize);
     }
 
     String buildAnswer(Node node, boolean visualize) {
