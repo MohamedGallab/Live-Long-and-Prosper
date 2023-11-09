@@ -1,8 +1,8 @@
 # Live Long and Prosper
-## Summary
+# Summary
 This project aims to represent generic search problem then make a specific one. We then construct an agent that provides a solution to the problem by using a generic search method that implements different algorithms.
 
-## Description
+# Description
 The problem described is a town management scenario where the goal is to increase the prosperity level of a town to 100 by strategically planning resource requests and building constructions. The town requires three types of resources (food, materials, energy), and the agent has a budget constraint of 100,000 with no additional income sources. There is also a limit on the amount of resources that can be stored in the town at any given time.
 
 The agent can perform various actions such as requesting resource deliveries (food, materials, energy), waiting for deliveries, and building constructions (BUILD1, BUILD2). Each action has associated costs, resource consumption, and delay parameters. The goal is to find a sequence of actions that lead to a prosperity level of 100 while minimizing the amount of money spent.
@@ -16,10 +16,10 @@ The provided classes, `GenericSearch`, `LLAPSearch`, and `Node`, will be used to
 Overall, the problem involves creating an intelligent search agent to efficiently navigate the search space and find an optimal plan for the town to reach a prosperity level of 100. The agent's performance will be evaluated based on various search strategies and their impact on runtime, resource utilization, and solution quality.
 
 
-## Implementation
+# Implementation
 Here we delve into the implementation details.
 
-### search problem abstract data type.
+## search problem abstract data type.
 This was represented as the abstract class called GenericSearch.
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/GenericSearch.java#L1C1-L20C2
@@ -33,7 +33,7 @@ This mirrors the 5-tuple definition:
 
 most of these should be implemented by a more specific problem that inherits it.
 
-### LLAP problem.
+## LLAP problem.
 This problem is a specific instance of the generic search problem.
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/LLAPSearch.java#L1C1-L336C2
@@ -56,22 +56,83 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L26C9-L26C65
    
 5. finally we visualize the solution.
-6. 
+   
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L28C9-L28C57
    
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L31C5-L47C6
-8. 
-### Search Class.
+
+   
+## Search Implementation.
 This class implements the general search procedure.
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/Search.java#L14C1-L70C6
 
+1. Create a HashSet to avoid repeated states
 
-### search-tree node abstract data type.
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L48C9-L48C50
+
+2. Create the first node of the search tree
+
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L49
+
+3. Create a queue based on the strategy specified
+
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L48C9-L48C50
+   
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L49C5-L76C6
+
+   ### The search algorithms.
+
+   we create a priority queue that sorts differently according to the specified strategy.
+   
+   1. "BF": Breadth first, sorts elements based on the depth ascendingly.
+   2. "DF": Depth first, sorts based on depth descendingly.
+   3. "ID": Iterative Depth, same as DF but stops at a certian depth that gets incremented every loop.
+      
+      https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L15C9-L39C18
+     
+   5. "UC": Uniform cost, sorts based on cost ascendingly.
+   6. "GR": Greedy, sorts based on a choice between 2 heuristics.
+   7. "AS": A*, sorts based on a combination of cost and heuristics.
+
+   ### The cost function
+   the cost in our problem is simply the money spent.
+   
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L82C1-L84C6
+
+   ### The Heuristics
+   1. Greedy 1: we simply choose the node that maximizes our prosperity
+
+      https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L289C5-L291C6
+
+   2. A* 1: this heuristic assumes the best ratio possible of the build operator. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible which means it will be admissible.
+
+      https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L300C1-L305C6
+   
+   3. A* 2: this heuristic improves upon A* 1 by calculating a lower bound of the money required for the resources which was previously ignored. it always assumes minimum cost for each resource as well as assuming the best starting conditions. this means this will always be admissible.
+
+      https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L307C5-L321C6
+      
+5. Add first node
+
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L53C1-L54C39
+
+6. while the queue is not empty take out a node, check if it is the goal, expand it if not.
+   
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L56C9-L68C10
+   
+7. return null signaling No Solution if queue is empty
+   
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L69
+
+## Search-tree node abstract data type.
+This class represents each node in the search tree. it encapsulates all the needed info about this node.
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/Node.java#L1C1-L46C2
 
-### A description of the main functions you implemented.
-### A discussion of how you implemented the various search algorithms.
-### A discussion of the heuristic functions you employed and, in the case of greedy
-or A*, an argument for their admissibility.
+as well as a state
+
+https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3C1-L21C6
+
+these variables are what makes a state different from another one.
+
