@@ -53,7 +53,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
    
 3. This problem and strategy are then passed onto the [search function](###search-class) which starts searching for a solution based on the specified algorithm.
 
-   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L26C9-L26C65
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L26-L26
    
 5. finally we visualize the solution.
    
