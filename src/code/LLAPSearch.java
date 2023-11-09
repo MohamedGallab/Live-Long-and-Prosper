@@ -1,6 +1,7 @@
 package code;
 
 import java.util.*;
+
 public class LLAPSearch extends GenericSearch {
     int unitPriceFood, unitPriceMaterials, unitPriceEnergy;
     int amountRequestFood, delayRequestFood;
@@ -15,12 +16,14 @@ public class LLAPSearch extends GenericSearch {
     }
 
     LLAPSearch(String initialState) {
-        super(initialState);
+        this.initialState = init(initialState);
     }
 
     public static String solve(String initialState, String strategy, boolean visualize) {
         LLAPSearch agent = new LLAPSearch(initialState);
-        Node goalNode = agent.GeneralSearch(strategy);
+
+        // Node goalNode = agent.GeneralSearch(strategy);
+        Node goalNode = Search.GeneralSearch(agent, strategy);
 
         return agent.buildAnswer(goalNode, visualize);
     }
@@ -55,16 +58,16 @@ public class LLAPSearch extends GenericSearch {
                         return n2.depth - n1.depth;
                     case "UC":
                         return costFunction(n1) - costFunction(n2);
-                    case "GR":
-                        return greedyHeuristic(n1) - greedyHeuristic(n2);
+                    case "GR1":
+                        return greedyHeuristic1(n1) - greedyHeuristic1(n2);
                     case "GR2":
                         return greedyHeuristic2(n1) - greedyHeuristic2(n2);
-                    case "AR":
-                        return (costFunction(n1) + arHeuristic(n1)) - (costFunction(n2) + arHeuristic(n2));
-                    case "AR2":
+                    case "AS1":
+                        return (costFunction(n1) + arHeuristic1(n1)) - (costFunction(n2) + arHeuristic1(n2));
+                    case "AS2":
                         return (costFunction(n1) + arHeuristic2(n1)) - (costFunction(n2) + arHeuristic2(n2));
                     default:
-                        return 0;
+                        throw new IllegalArgumentException("Invalid strategy: " + strategy);
                 }
             }
         });
@@ -283,7 +286,7 @@ public class LLAPSearch extends GenericSearch {
         return root.state;
     }
 
-    int greedyHeuristic(Node node) {
+    int greedyHeuristic1(Node node) {
         return 100 - node.state.prosperity;
     }
 
@@ -294,7 +297,14 @@ public class LLAPSearch extends GenericSearch {
         return moneyToSpend;
     }
 
-    int arHeuristic(Node node) {
+    int arHeuristic1(Node node) {
+        int prosperityBuild = prosperityBUILD1 > prosperityBUILD2 ? prosperityBUILD1 : prosperityBUILD2;
+        int priceBuild = priceBUILD1 < priceBUILD2 ? priceBUILD1 : priceBUILD2;
+        int moneyToSpend = (100 - node.state.prosperity) / prosperityBuild * priceBuild;
+        return moneyToSpend;
+    }
+
+    int arHeuristic2(Node node) {
         int prosperityBuild = prosperityBUILD1 > prosperityBUILD2 ? prosperityBUILD1 : prosperityBUILD2;
         int priceBuild = priceBUILD1 < priceBUILD2 ? priceBUILD1 : priceBUILD2;
         int materialBuild = materialsUseBUILD1 < materialsUseBUILD2 ? materialsUseBUILD1 : materialsUseBUILD2;
@@ -310,49 +320,17 @@ public class LLAPSearch extends GenericSearch {
         return moneyToSpend;
     }
 
-    int arHeuristic2(Node node) {
-        List<List<Integer>> pairs = new ArrayList<>();
-
-        for (int i = 0; i < 101; i++) {
-            for (int j = 0; j < 101; j++) {
-                if (i * prosperityBUILD1 + j * prosperityBUILD2 >= 100 - node.state.prosperity) {
-                    List<Integer> tmp = new ArrayList<>();
-                    tmp.add(i);
-                    tmp.add(j);
-                    pairs.add(tmp);
-                }
-            }
-        }
-
-        int minCost = Integer.MAX_VALUE;
-
-        for (List<Integer> pair : pairs) {
-            if (pair.get(0) * priceBUILD1 + pair.get(1) * priceBUILD2 < minCost) {
-                minCost = pair.get(0) * priceBUILD1 + pair.get(1) * priceBUILD2;
-            }
-        }
-
-        return minCost;
-    }
-
-    boolean isUnique(State state) {
-        return visited.add(state);
-    }
-
     public static void main(String[] args) throws Exception {
-        // String init = "50;" +
-        // "22,22,22;" +
-        // "50,60,70;" +
-        // "30,2;19,1;15,1;" +
-        // "300,5,7,3,20;" +
-        // "500,8,6,3,40;";
-        String init = "32;" +
-                "20,16,11;" +
-                "76,14,14;" +
-                "9,1;9,2;9,1;" +
-                "358,14,25,23,39;" +
-                "5024,20,17,17,38;";
-        System.out.println("hi");
-        solve(init, "BF", true);
+        String init = "50;" +
+                "22,22,22;" +
+                "50,60,70;" +
+                "30,2;19,1;15,1;" +
+                "300,5,7,3,20;" +
+                "500,8,6,3,40;";
+
+        System.out.println("ANSWER: ");
+        solve(init, "AS1", true);
+        System.out.println("ANSWER: ");
+        solve(init, "AS2", true);
     }
 }
