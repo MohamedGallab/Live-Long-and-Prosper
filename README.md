@@ -105,7 +105,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L289-L291
 
-   2. A* 1: this heuristic assumes the best ratio possible of the build operator. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible which means it will be admissible.
+   2. A* 1: this heuristic assumes the best ratio possible of cost per prosperity level. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible as it combines the lowest cost with the most levels gained between both build operators which means it will be admissible.
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L300-L305
    
