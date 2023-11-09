@@ -132,6 +132,8 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
 
 as well as a state
 
+# Performance comparison
+
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
 
 these variables are what makes a state different from another one.
