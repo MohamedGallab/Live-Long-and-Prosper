@@ -86,8 +86,8 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
    we create a priority queue that sorts differently according to the specified strategy.
    
    1. "BF": Breadth first, sorts elements based on the depth ascendingly.
-   2. "DF": Depth first, sorts based on depth descendingly.
-   3. "ID": Iterative Depth, same as DF but stops at a certian depth that gets incremented every loop.
+   2. "DF": Depth-first, sorts based on depth descendingly.
+   3. "ID": Iterative Depth, same as DF but stops at a certain depth that gets incremented every loop. If there is no solution the loop will run indefinitely until the program times out (120s), this was specified by the professor. An alternate solution that we did can be found commented out at the end of the code snippet, this solution tracks the max depth reached in each iteration until the max depth stops increasing and thus the loop terminates(we have reached the maximum possible depth).
       
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L15-L39
      
@@ -105,7 +105,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L289-L291
 
-   2. A* 1: this heuristic assumes the best ratio possible of cost per prosperity level. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible as it combines the lowest cost with the most levels gained between both build operators which means it will be admissible.
+   2. A* 1: This heuristic assumes the best ratio possible of cost per prosperity level. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible as it combines the lowest cost with the most levels gained between both build operators which means it will be admissible.
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L300-L305
    
