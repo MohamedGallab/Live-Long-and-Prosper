@@ -22,7 +22,7 @@ Here we delve into the implementation details.
 ## search problem abstract data type.
 This was represented as the abstract class called GenericSearch.
 
-https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/GenericSearch.java#L1C1-L20C2
+https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/GenericSearch.java#L1-L20
 
 This mirrors the 5-tuple definition:
 1. Operators.
