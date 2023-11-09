@@ -46,13 +46,25 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
 
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/LLAPSearch.java#L248C5-L287C6
 
-3. The init method decodes the input string and saves the parameters into the instance variables
+3. The init method decodes the input string and saves the parameters into the instance variables. Also returns a root state.
 
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/Search.java#L1C1-L71C2
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/LLAPSearch.java#L6C5-L12C27
    
-3. Then x
+3. This problem and strategy are then passed onto the [search function](###search-class) which starts searching for a solution based on the specified algorithm.
 
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L26C9-L26C65
+   
+5. finally we visualize the solution.
+6. 
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L28C9-L28C57
+   
+   https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/LLAPSearch.java#L31C5-L47C6
+8. 
+### Search Class.
+This class implements the general search procedure.
+
+https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542ab08589903c74b344475a/src/code/Search.java#L14C1-L70C6
 
 
 ### search-tree node abstract data type.
