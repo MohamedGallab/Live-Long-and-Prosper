@@ -142,6 +142,20 @@ DF 15562788
 ID 5702526
 <img width="1068" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d14cb566-cc71-4d32-8eee-3fd1230ff71b">
 
+UC 15832752
+![image](https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/62225acc-dfe1-4254-b993-974b82950f39)
+
+GR1 17999
+<img width="1071" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/9893a66e-5361-4570-a541-0ac80a9ee3ea">
+
+GR2 18003
+<img width="1069" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/e2d443ae-8f88-4641-97ce-2281e1c09a30">
+
+AS1 14866169
+<img width="1072" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/7b90add5-a2f6-4c35-a09d-875686ae8442">
+
+AS2 11540461
+<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d54a3082-e1e0-4872-9dd0-780008d63517">
 
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
