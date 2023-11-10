@@ -133,6 +133,16 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
 as well as a state
 
 # Performance comparison
+BFS 644143
+<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/51bef6c3-0250-4af3-9f23-facf0c85b558">
+
+DF 15562788
+<img width="1070" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/6bd3aa18-4bad-4165-95f8-e40bcf9bfc5d">
+
+ID 5702526
+<img width="1068" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d14cb566-cc71-4d32-8eee-3fd1230ff71b">
+
+
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
 
