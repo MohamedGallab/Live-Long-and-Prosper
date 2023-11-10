@@ -126,7 +126,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L69
 
 ## Search-tree node abstract data type.
-This class represents each node in the search tree. it encapsulates all the needed info about this node.
+This class represents each node in the search tree. it encapsulates all the needed info about this node. 
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/Node.java#L1-L46
 
@@ -137,7 +137,16 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06
 these variables are what makes a state different from another one.
 
 # Performance comparison
-Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete.
+Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete. These performance metrics were ran on this initial string and monitored using [VisualVM](https://visualvm.github.io/)
+
+```java
+String init = "32;" +
+                "20,16,11;" +
+                "76,14,14;" +
+                "9,1;9,2;9,1;" +
+                "358,14,25,23,39;" +
+                "5024,20,17,17,38;";
+```
 
 BFS 644143
 
@@ -184,5 +193,11 @@ Optimality: Yes
 AS2 11540461
 
 Optimality: Yes
+
 <img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d54a3082-e1e0-4872-9dd0-780008d63517">
+
+## Discussion
+We notice that AS1 and AS2 provide the most optimal solution but at the cost of expanding 10 million+ nodes as compared to the greedy approach which provided a solution (although not optimal) while only expanding 18 thousand nodes.
+
+The UC is never worth using when we have access to the A* strategies as it just takes longer to do the same job. BFS, DFS and ID all depend heavily on the problem. In this case there existed a goal that was not too deep so BFS performed best out of the three.
 
