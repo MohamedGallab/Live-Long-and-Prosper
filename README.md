@@ -132,14 +132,14 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8
 
 as well as a state
 
+https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
+
+these variables are what makes a state different from another one.
+
 # Performance comparison
-Assumptions: 
-1. Cost is diverging and none decreasing.
-2. Tree is finite in width.
+Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete.
 
 BFS 644143
-
-Completeness: Almost complete
 
 Optimality: Generally not optimal
 
@@ -147,15 +147,11 @@ Optimality: Generally not optimal
 
 DF 15562788
 
-Completeness: Not complete
-
 Optimality: Generally not optimal
 
 <img width="1070" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/6bd3aa18-4bad-4165-95f8-e40bcf9bfc5d">
 
 ID 5702526
-
-Completeness: Complete
 
 Optimality: Generally not optimal
 
@@ -163,15 +159,11 @@ Optimality: Generally not optimal
 
 UC 15832752
 
-Completeness: Yes
-
 Optimality: Yes
 
 ![image](https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/62225acc-dfe1-4254-b993-974b82950f39)
 
 GR1 17999
-
-Completeness: Yes
 
 Optimality: Generally not optimal
 
@@ -179,15 +171,11 @@ Optimality: Generally not optimal
 
 GR2 18003
 
-Completeness: Yes
-
 Optimality: Generally not optimal
 
 <img width="1069" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/e2d443ae-8f88-4641-97ce-2281e1c09a30">
 
 AS1 14866169
-
-Completeness: Yes
 
 Optimality: Yes
 
@@ -195,13 +183,6 @@ Optimality: Yes
 
 AS2 11540461
 
-Completeness: Yes
-
 Optimality: Yes
 <img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d54a3082-e1e0-4872-9dd0-780008d63517">
-
-
-https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
-
-these variables are what makes a state different from another one.
 
