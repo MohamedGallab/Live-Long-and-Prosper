@@ -86,8 +86,8 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
    we create a priority queue that sorts differently according to the specified strategy.
    
    1. "BF": Breadth first, sorts elements based on the depth ascendingly.
-   2. "DF": Depth first, sorts based on depth descendingly.
-   3. "ID": Iterative Depth, same as DF but stops at a certian depth that gets incremented every loop.
+   2. "DF": Depth-first, sorts based on depth descendingly.
+   3. "ID": Iterative Depth, same as DF but stops at a certain depth that gets incremented every loop. If there is no solution the loop will run indefinitely until the program times out (120s), this was specified by the professor. An alternate solution that we did can be found commented out at the end of the code snippet, this solution tracks the max depth reached in each iteration until the max depth stops increasing and thus the loop terminates(we have reached the maximum possible depth).
       
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L15-L39
      
@@ -105,7 +105,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L289-L291
 
-   2. A* 1: this heuristic assumes the best ratio possible of cost per prosperity level. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible as it combines the lowest cost with the most levels gained between both build operators which means it will be admissible.
+   2. A* 1: This heuristic assumes the best ratio possible of cost per prosperity level. then we calculate how many prosperity levels we need and calculate how much those remaining levels will cost. this function ignores the cost of materials and assumes a ratio that might not be possible as it combines the lowest cost with the most levels gained between both build operators which means it will be admissible.
 
       https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/LLAPSearch.java#L300-L305
    
@@ -126,15 +126,78 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/7063c878ebd85657542a
    https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/Search.java#L69
 
 ## Search-tree node abstract data type.
-This class represents each node in the search tree. it encapsulates all the needed info about this node.
+This class represents each node in the search tree. it encapsulates all the needed info about this node. 
 
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/8ed381617fa5c4d8f1f8f8908e9f85fb30948849/src/code/Node.java#L1-L46
 
 as well as a state
 
-# Performance comparison
-
 https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06309a5b74ba5bd475d347/src/code/State.java#L3-L21
 
 these variables are what makes a state different from another one.
+
+# Performance comparison
+Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete. These performance metrics were ran on this initial string and monitored using [VisualVM](https://visualvm.github.io/)
+
+```java
+String init = "32;" +
+                "20,16,11;" +
+                "76,14,14;" +
+                "9,1;9,2;9,1;" +
+                "358,14,25,23,39;" +
+                "5024,20,17,17,38;";
+```
+
+BFS 644143
+
+Optimality: Generally not optimal
+
+<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/51bef6c3-0250-4af3-9f23-facf0c85b558">
+
+DF 15562788
+
+Optimality: Generally not optimal
+
+<img width="1070" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/6bd3aa18-4bad-4165-95f8-e40bcf9bfc5d">
+
+ID 5702526
+
+Optimality: Generally not optimal
+
+<img width="1068" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d14cb566-cc71-4d32-8eee-3fd1230ff71b">
+
+UC 15832752
+
+Optimality: Yes
+
+![image](https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/62225acc-dfe1-4254-b993-974b82950f39)
+
+GR1 17999
+
+Optimality: Generally not optimal
+
+<img width="1071" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/9893a66e-5361-4570-a541-0ac80a9ee3ea">
+
+GR2 18003
+
+Optimality: Generally not optimal
+
+<img width="1069" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/e2d443ae-8f88-4641-97ce-2281e1c09a30">
+
+AS1 14866169
+
+Optimality: Yes
+
+<img width="1072" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/7b90add5-a2f6-4c35-a09d-875686ae8442">
+
+AS2 11540461
+
+Optimality: Yes
+
+<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d54a3082-e1e0-4872-9dd0-780008d63517">
+
+## Discussion
+We notice that AS1 and AS2 provide the most optimal solution but at the cost of expanding 10 million+ nodes as compared to the greedy approach which provided a solution (although not optimal) while only expanding 18 thousand nodes.
+
+The UC is never worth using when we have access to the A* strategies as it just takes longer to do the same job. BFS, DFS and ID all depend heavily on the problem. In this case there existed a goal that was not too deep so BFS performed best out of the three.
 
