@@ -137,7 +137,7 @@ https://github.com/MohamedGallab/Live-Long-and-Prosper/blob/707d84a825738ff85b06
 these variables are what makes a state different from another one.
 
 # Performance comparison
-Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete. These performance metrics were ran on this initial string and monitored using [VisualVM](https://visualvm.github.io/)
+Considering that in our specific problem, the search tree is never infinite, this means all algorithms are complete. These performance metrics were ran on the initial string of test 10 and monitored using [VisualVM](https://visualvm.github.io/)
 
 ```java
 String init = "32;" +
@@ -148,56 +148,58 @@ String init = "32;" +
                 "5024,20,17,17,38;";
 ```
 
-BFS 644143
+BFS 502100
 
-Optimality: Generally not optimal
+Optimal: Generally not optimal
 
-<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/51bef6c3-0250-4af3-9f23-facf0c85b558">
+<img width="1009" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/a76796c1-084f-44cf-a918-9c70a678c977">
 
-DF 15562788
+DF 12181201
 
-Optimality: Generally not optimal
+Optimal: Generally not optimal
 
-<img width="1070" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/6bd3aa18-4bad-4165-95f8-e40bcf9bfc5d">
+<img width="1008" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/e720eced-79af-4726-a107-ade906f3955d">
 
-ID 5702526
+ID 4664886
 
-Optimality: Generally not optimal
+Optimal: Generally not optimal
 
 <img width="1068" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d14cb566-cc71-4d32-8eee-3fd1230ff71b">
 
-UC 15832752
+UC 12294033
 
-Optimality: Yes
+Optimal: Yes
 
-![image](https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/62225acc-dfe1-4254-b993-974b82950f39)
+<img width="1008" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/ed85abcd-625f-4c1d-ab36-d1842e69c731">
 
-GR1 17999
+GR1 45976
 
-Optimality: Generally not optimal
+Optimal: Generally not optimal
 
-<img width="1071" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/9893a66e-5361-4570-a541-0ac80a9ee3ea">
+<img width="1007" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/db4f2678-1e48-4abb-8b1e-2bd19a36e55b">
 
-GR2 18003
+GR2 46700
 
-Optimality: Generally not optimal
+Optimal: Generally not optimal
 
-<img width="1069" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/e2d443ae-8f88-4641-97ce-2281e1c09a30">
+<img width="1009" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/336d413b-3ed8-47c6-ace8-49f1ade7ec2d">
 
-AS1 14866169
+AS1 11527159
 
-Optimality: Yes
+Optimal: Yes
 
-<img width="1072" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/7b90add5-a2f6-4c35-a09d-875686ae8442">
+<img width="1008" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/8c4d8e36-fcad-4175-a1fe-e68bf67cf410">
 
-AS2 11540461
+AS2 8884635
 
-Optimality: Yes
+Optimal: Yes
 
-<img width="1073" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/d54a3082-e1e0-4872-9dd0-780008d63517">
+<img width="1008" alt="image" src="https://github.com/MohamedGallab/Live-Long-and-Prosper/assets/74183135/c6d136d3-ba66-4d53-926c-5a7080c58fb9">
 
 ## Discussion
-We notice that AS1 and AS2 provide the most optimal solution but at the cost of expanding 10 million+ nodes as compared to the greedy approach which provided a solution (although not optimal) while only expanding 18 thousand nodes.
+We notice that AS1 and AS2 provide the most optimal solution but at the cost of expanding 8 million+ nodes as compared to the greedy approach which provided a solution (although not optimal) while only expanding 18 thousand nodes.
 
 The UC is never worth using when we have access to the A* strategies as it just takes longer to do the same job. BFS, DFS and ID all depend heavily on the problem. In this case there existed a goal that was not too deep so BFS performed best out of the three.
+
+The Greedy approach provided the fastest result but it was not optimal.
 
