@@ -3,6 +3,20 @@ package code;
 import java.util.*;
 
 public class LLAPSearch extends GenericSearch {
+
+    public static void main(String[] args) throws Exception {
+        String init = "32;" +
+                "20,16,11;" +
+                "76,14,14;" +
+                "9,1;9,2;9,1;" +
+                "358,14,25,23,39;" +
+                "5024,20,17,17,38;";
+
+        System.out.println("ANSWER: ");
+        String answer = solve(init, "ID", true);
+        System.out.println(answer);
+    }
+
     int unitPriceFood, unitPriceMaterials, unitPriceEnergy;
     int amountRequestFood, delayRequestFood;
     int amountRequestMaterials, delayRequestMaterials;
@@ -86,12 +100,12 @@ public class LLAPSearch extends GenericSearch {
     List<Node> expand(Node root) {
         List<Node> children = new ArrayList<>();
 
-        children.add(requestEnergy(root));
-        children.add(requestFood(root));
-        children.add(requestMaterials(root));
         children.add(build1(root));
         children.add(build2(root));
         children.add(wait(root));
+        children.add(requestFood(root));
+        children.add(requestMaterials(root));
+        children.add(requestEnergy(root));
 
         expandedNodes++;
 
@@ -180,7 +194,10 @@ public class LLAPSearch extends GenericSearch {
                     root.state.energy = root.state.energy < 50 ? root.state.energy : 50;
                     break;
             }
+            root.state.orderedResources = null;
         }
+        if (root.state.daysTillDelivery < 0)
+            root.state.daysTillDelivery = -1;
     }
 
     Node wait(Node root) {
@@ -194,7 +211,6 @@ public class LLAPSearch extends GenericSearch {
         child.depth++;
         child.state.daysTillDelivery--;
         checkDeliveryArrived(child);
-
         child.state.food--;
         child.state.materials--;
         child.state.energy--;
@@ -229,9 +245,9 @@ public class LLAPSearch extends GenericSearch {
     Node build2(Node root) {
         Node child = new Node(root);
 
-        child.state.daysTillDelivery--;
-        child.operator = Operator.Build2;
         child.depth++;
+        child.operator = Operator.Build2;
+        child.state.daysTillDelivery--;
         checkDeliveryArrived(child);
         child.state.food -= foodUseBUILD2;
         child.state.materials -= materialsUseBUILD2;
@@ -320,17 +336,4 @@ public class LLAPSearch extends GenericSearch {
         return moneyToSpend;
     }
 
-    public static void main(String[] args) throws Exception {
-        String init = "50;" +
-                "22,22,22;" +
-                "50,60,70;" +
-                "30,2;19,1;15,1;" +
-                "300,5,7,3,20;" +
-                "500,8,6,3,40;";
-
-        System.out.println("ANSWER: ");
-        solve(init, "AS1", true);
-        System.out.println("ANSWER: ");
-        solve(init, "AS2", true);
-    }
 }
